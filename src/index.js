@@ -1,38 +1,25 @@
-var Chart = require('chart.js');
-var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
+var { MyChart, getColor } = require('./mychart');
+
+var $ = require("jquery");
+
+function isBrowser() { return window ? true : false; };
+
+if (isBrowser()) {
+    $("#id").html("");
+} else {
+    console.log("id add");
+}
+/* type을 반드시 넣어야함, 안넣으면 안나옴 */
+
+global.chart = new MyChart({
+    id: 'myChart'
 });
+
+chart.setData([
+    { name: 'Math', value: 50 },
+    { name: 'Korean', value: 77 },
+    { name: 'Engish', value: 30 },
+    { name: 'Science', value: 70 },
+    { name: 'History', value: 80 },
+    { name: 'Music', value: 90 }
+]);

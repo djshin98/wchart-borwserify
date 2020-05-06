@@ -34,7 +34,7 @@ var paths = {
         dest: 'dist/models/'
     },
     js: {
-        src: 'src/js/**/*.js',
+        src: 'src/**/*.js',
         dest: 'dist/js/'
     },
     scripts: {
@@ -60,6 +60,18 @@ function js() {
         }).transform(babelify)
         .bundle()
         .pipe(source(paths.scripts.output))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        //.pipe(uglify())
+        .pipe(dest(paths.scripts.dest));
+}
+
+function js_src() {
+    return browserify({
+            entries: paths.scripts.entries
+        }).transform(babelify)
+        .bundle()
+        .pipe(source(paths.scripts.output_src))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         //.pipe(uglify())
@@ -92,7 +104,8 @@ function watchFiles() {
     watch(paths.scss.src, scss);
     watch(paths.css.src, css);
     watch(paths.html.src, html);
-    watch(paths.scripts.entries[0], js);
+    watch(paths.js.src, js);
+    watch(paths.js.src, js_src);
 }
 
 function clean() {
@@ -101,4 +114,4 @@ function clean() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(js, scss, css, html));
+exports.default = parallel(watchFiles, series(js, js_src, scss, css, html));
